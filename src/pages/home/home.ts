@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { IonicPage } from 'ionic-angular/navigation/ionic-page';
 import { MenuController } from 'ionic-angular/components/app/menu-controller';
 import { CredenciaisDTO } from './../../models/credenciais.dto';
+import { AuthService } from './../../services/auth.service';
 
 @IonicPage()// Decorator da página
 @Component({
@@ -17,9 +18,11 @@ export class HomePage {
   }
 
   // Controlador da View
-  constructor(public navCtrl: NavController, public menu: MenuController) {
-
-  }
+  constructor(
+    public navCtrl: NavController,
+    public menu: MenuController,
+    public auth: AuthService
+  ) { }
 
   ionViewWillEnter() {
     this.menu.swipeEnable(false);
@@ -30,8 +33,12 @@ export class HomePage {
   }
 
   login() {
-    console.log(this.creds);
-    this.navCtrl.setRoot('CategoriasPage');
+    this.auth.authenticate(this.creds)
+      .subscribe(response => {
+        console.log(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('CategoriasPage');
+      },
+      error => {});
   }
 
 }
