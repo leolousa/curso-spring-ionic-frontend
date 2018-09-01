@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Rx";
 import { API_CONFIG } from '../../config/api.config';
 
 /**
- * Classe de serviço para aRxs Categorias
+ * Classe de serviço para as Categorias
  */
 
 
