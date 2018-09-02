@@ -26,13 +26,20 @@ export class ProfilePage {
   ionViewDidLoad() {
     let localUser = this.storage.getLocalUser();
     if(localUser && localUser.email) {
+      // busca por e-mail do cliente
       this.clienteService.findByEmail(localUser.email)
         .subscribe(response => {
           this.cliente = response;
           this.getImageIfExists();
 
         },
-        error => {});
+        error => {
+          if(error.status == 403) {
+            this.navCtrl.setRoot('HomePage'); // Navega para a página principal
+          }
+        });
+    } else {
+      this.navCtrl.setRoot('HomePage'); // Navega para a página principal caso ocorra algum problema para obter o localUser
     }
   }
 
