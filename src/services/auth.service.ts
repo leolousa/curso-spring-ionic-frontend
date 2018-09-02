@@ -23,8 +23,18 @@ export class AuthService {
         creds,
         {
           observe: 'response',
-          responseType: 'text'
+          responseType: 'text' // para não dar erro de parse
       });
+  }
+
+  refreshToken() {
+    return this.http.post(
+      `${API_CONFIG.baseUrl}/auth/refresh_token`,
+      {},
+      {
+        observe: 'response',
+        responseType: 'text' // para não dar erro de parse
+    });
   }
 
   // Remove o Bearer_ (Recorta a string à partir do 7o caractere) e guarda o token no LocalStorage

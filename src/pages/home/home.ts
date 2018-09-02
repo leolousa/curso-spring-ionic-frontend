@@ -24,12 +24,24 @@ export class HomePage {
     public auth: AuthService
   ) { }
 
+  // Antes de entrar na página
   ionViewWillEnter() {
     this.menu.swipeEnable(false);
   }
 
+  // Deixou a página
   ionViewDidLeave() {
     this.menu.swipeEnable(true);
+  }
+
+  // entrou na página
+  ionViewDidEnter(){
+    this.auth.refreshToken()
+      .subscribe(response => {
+        this.auth.successfulLogin(response.headers.get('Authorization')); // Chama método que armazena o Token
+        this.navCtrl.setRoot('CategoriasPage');
+      },
+      error => {});
   }
 
   login() {
