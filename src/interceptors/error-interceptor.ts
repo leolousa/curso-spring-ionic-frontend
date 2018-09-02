@@ -34,20 +34,20 @@ export class ErrorInterceptor implements HttpInterceptor {
           switch(errorObj.status) {
 
             case 401: // Erro de autenticação
-            this.handle401();
-            break;
+              this.handle401();
+              break;
 
             case 403: // Acesso negado - Autenticação falhou
-            this.handle403();
-            break;
+              this.handle403();
+              break;
 
             case 404: // Recurso não encontrado
-            this.handle404();
-            break;
+              this.handle404();
+              break;
 
             default:
-            this.handleDefaultError(errorObj);
-            break;
+              this.handleDefaultError(errorObj);
+              break;
           }
           // propaga o erro para o controlador
           return Observable.throw(errorObj);
