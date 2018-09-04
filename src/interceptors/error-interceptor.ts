@@ -1,3 +1,4 @@
+import { FieldMessage } from './../models/fieldmessage';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -45,6 +46,10 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.handle404();
               break;
 
+            case 422: // Erro de validação
+              this.handle422(errorObj);
+              break;
+
             default:
               this.handleDefaultError(errorObj);
               break;
@@ -52,6 +57,20 @@ export class ErrorInterceptor implements HttpInterceptor {
           // propaga o erro para o controlador
           return Observable.throw(errorObj);
       }) as any;
+  }
+
+  handle401() {
+
+    let alert = this.alertCtrl.create({
+      title: 'Erro 401: Falha de autenticação!',
+      message: 'Email ou senha incorretos',
+      enableBackdropDismiss: false,
+      buttons: [
+        { text: 'Ok' }
+      ]
+    });
+
+    alert.present();
   }
 
   handle403() {
@@ -71,11 +90,10 @@ export class ErrorInterceptor implements HttpInterceptor {
     alert.present();
   }
 
-  handle401() {
-
+  handle422(erroObj) {
     let alert = this.alertCtrl.create({
-      title: 'Erro 401: Falha de autenticação!',
-      message: 'Email ou senha incorretos',
+      title: 'Erro 422: Erro de validação!',
+      message: this.listErrors(erroObj.errors),
       enableBackdropDismiss: false,
       buttons: [
         { text: 'Ok' }
@@ -97,7 +115,22 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     alert.present();
   }
+
+  listErrors(messages: FieldMessage[]): string {
+    let s: string = '';
+    for (var i=0; i<messages.length; i++) {
+      s = s + '<p><strong>' + messages[i].fieldName + '</strong>: ' + messages[i].message + '</p>';
+    }
+
+    return s;
+  }
+
+
 }
+
+
+
+
 
 // Exigências para criação do Interceptor
 export const ErrorInterceptorProvider = {

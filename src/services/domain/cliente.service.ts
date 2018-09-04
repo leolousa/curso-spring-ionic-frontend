@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { API_CONFIG } from './../../config/api.config';
 import { ClienteDTO } from '../../models/cliente.dto';
@@ -16,7 +16,7 @@ export class ClienteService {
 
   findByEmail(email: string): Observable<ClienteDTO> {
 
-    // Não precisamos mais deste código pois inserimos a o token
+    // Não precisamos mais deste código pois inserimos o token
     // de autorização pelo Interceptor (AuthInterceptor)
     // let token = this.storage.getLocalUser().token;
     // let authHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + token });
@@ -30,5 +30,14 @@ export class ClienteService {
   getImageFromBucket(id: string): Observable<any> {
     let url = `${API_CONFIG.bucketBaseUrl}/cp${id}.jpg`;
     return this.http.get(url, {responseType: 'blob'});
+  }
+
+  insert(obj: ClienteDTO) {
+    return this.http.post(`${API_CONFIG.baseUrl}/clientes`, obj,
+      {
+        observe: 'response',
+        responseType: 'text' // o corpo vem vazio, então retornamos texto para não dar o erro de JSON
+      }
+    );
   }
 }
