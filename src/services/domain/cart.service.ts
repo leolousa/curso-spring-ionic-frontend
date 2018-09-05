@@ -29,12 +29,64 @@ export class CartService {
     let cart = this.getCart();
     // Encontra na lista de itens do carrinho o item que tem o mesmo id que queremos inserir
     let position = cart.items.findIndex(x => x.produto.id == produto.id);
-    if(position == -1) {
+    if(position == -1) { // Produto não foi encontrado na posição?
       // Insere o produto se não está na lista
       cart.items.push({ quantidade: 1, produto: produto });
     }
     this.storage.setCart(cart);
 
     return cart;
+  }
+
+  removeProduto(produto: ProdutoDTO): Cart {
+    let cart = this.getCart();
+    // Encontra na lista de itens do carrinho o item que tem o mesmo id que queremos inserir
+    let position = cart.items.findIndex(x => x.produto.id == produto.id);
+    if(position != -1) { // Produto foi encontrado na posição?
+      // remove o produto se foi encontrado na lista
+      cart.items.splice(position, 1);
+    }
+    this.storage.setCart(cart);
+
+    return cart;
+  }
+
+  increaseQuantity(produto: ProdutoDTO): Cart {
+    let cart = this.getCart();
+    // Encontra na lista de itens do carrinho o item que tem o mesmo id que queremos inserir
+    let position = cart.items.findIndex(x => x.produto.id == produto.id);
+    if(position != -1) { // Produto foi encontrado na posição?
+      // aumenta a quantidade
+      cart.items[position].quantidade++;
+    }
+    this.storage.setCart(cart);
+
+    return cart;
+  }
+
+  decreaseQuantity(produto: ProdutoDTO): Cart {
+    let cart = this.getCart();
+    // Encontra na lista de itens do carrinho o item que tem o mesmo id que queremos inserir
+    let position = cart.items.findIndex(x => x.produto.id == produto.id);
+    if(position != -1) { // Produto foi encontrado na posição?
+      // diminui a quantidade
+      cart.items[position].quantidade--;
+      if(cart.items[position].quantidade < 1) {
+        cart = this.removeProduto(produto);
+      }
+    }
+    this.storage.setCart(cart);
+
+    return cart;
+  }
+
+  total(): number {
+    let cart = this.getCart();
+    let sum = 0;
+    for (let i = 0; i < cart.items.length; i++) {
+      sum += cart.items[i].produto.preco * cart.items[i].quantidade;
+    }
+
+    return sum;
   }
 }
