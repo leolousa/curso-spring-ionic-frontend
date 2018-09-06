@@ -29,7 +29,7 @@ export class ProfilePage {
       // busca por e-mail do cliente
       this.clienteService.findByEmail(localUser.email)
         .subscribe(response => {
-          this.cliente = response;
+          this.cliente = response as ClienteDTO; // Cast feito pois alteramos a tipagem do método findByEmail(cliente.service) retorno da resposta
           this.getImageIfExists();
 
         },

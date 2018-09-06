@@ -12,9 +12,9 @@ export class ClienteService {
   constructor(
     public http: HttpClient,
     public storage: StorageService
-  ) {}
+  ) { }
 
-  findByEmail(email: string): Observable<ClienteDTO> {
+  /*  findByEmail(email: string): Observable<ClienteDTO> {
 
     // Não precisamos mais deste código pois inserimos o token
     // de autorização pelo Interceptor (AuthInterceptor)
@@ -25,6 +25,11 @@ export class ClienteService {
     //  { 'headers': authHeader });
 
     return this.http.get<ClienteDTO>(`${API_CONFIG.baseUrl}/clientes/email?value=${email}`);
+  }*/
+
+  // Removendo a tipagem do ClienteDTO
+  findByEmail(email: string){
+    return this.http.get(`${API_CONFIG.baseUrl}/clientes/email?value=${email}`);
   }
 
   getImageFromBucket(id: string): Observable<any> {
