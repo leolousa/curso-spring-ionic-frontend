@@ -44,7 +44,7 @@ export class AuthService {
     let tok = authorizationValue.substring(7);
     let user: LocalUser = {
       token: tok,
-      email: this.jwtHelper.decodeToken(tok).sub // Pega o e0mail no Token
+      email: this.jwtHelper.decodeToken(tok).sub // Pega o email no Token
     };
     this.storage.setLocalUser(user);
     this.cartService.createOrClearCart();
