@@ -57,6 +57,11 @@ export class CartPage {
     return this.cartService.total();
   }
 
+  // Metodo para finalizar o pedido
+  checkOut() {
+    this.navCtrl.push('PickAddressPage');
+  }
+
   // Metodo para continuar comprando
   goOn() {
     this.navCtrl.setRoot('CategoriasPage');
